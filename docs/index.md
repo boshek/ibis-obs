@@ -1,5 +1,31 @@
 ## Hydrometric Discharge in the Yukon Territory
 
+### Stations in the Yukon Territory
+
+```js
+const stations = FileAttachment("data/stations.json").json()
+```
+
+```js
+import * as L from "npm:leaflet";
+const div = display(document.createElement("div"));
+div.style = "height: 800px;";
+const map = L.map(div)
+  .setView([66.748, -137.508], 5);
+
+L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+})
+  .addTo(map);
+
+stations.forEach(function(location) {
+    var marker = L.marker([location.LATITUDE, location.LONGITUDE]).addTo(map);
+    marker.bindPopup(location.STATION_NAME); 
+});
+```
+
+### Discharge Summary
+
 ```js
 const discharge = FileAttachment("data/discharge.csv").csv({typed: true});
 ```
@@ -34,3 +60,5 @@ function dischargePlot(data, discharge_threshold) {
   <div class="card">${dischargePlot(discharge, x)}
   </div>
 </div>
+
+
